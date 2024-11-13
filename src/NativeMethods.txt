@@ -1,0 +1,6 @@
+﻿OpenPackageInfoByFullName
+GetPackageInfo
+ClosePackageInfo
+GetThreadPreferredUILanguages
+
+PACKAGE_INFO
