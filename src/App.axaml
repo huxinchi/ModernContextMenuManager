@@ -1,0 +1,19 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:ModernContextMenuManager.ViewModels"
+			 xmlns:helper="using:ModernContextMenuManager.Helpers"
+             x:Class="ModernContextMenuManager.App"
+             RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+	<Application.Styles>
+		<FluentTheme />
+	</Application.Styles>
+
+	<Application.Resources>
+		<vm:ViewModelLocator x:Key="Locator" />
+		<helper:NotConverter x:Key="NotConverter" />
+		<helper:StringIsEmptyConverter x:Key="StringIsEmptyConverter" />
+		<helper:StringIsNotEmptyConverter x:Key="StringIsNotEmptyConverter" />
+	</Application.Resources>
+</Application>

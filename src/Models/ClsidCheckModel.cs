@@ -1,4 +1,5 @@
-﻿using ModernContextMenuManager.Helpers;
+﻿using ModernContextMenuManager.Base;
+using ModernContextMenuManager.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModernContextMenuManager.Models
 {
-    public class ClsidCheckModel
+    public partial class ClsidCheckModel : ObservableObject
     {
         private bool enabled;
 
@@ -25,15 +26,11 @@ namespace ModernContextMenuManager.Models
         public bool Enabled
         {
             get => enabled;
-            set
-            {
-                var oldValue = enabled;
-                enabled = value;
-                if (!PackagedComHelper.SetBlockedClsid(Clsid, PackagedComHelper.BlockedClsidType.CurrentUser, !enabled))
-                {
-                    enabled = oldValue;
-                }
-            }
+            set => SetProperty(ref enabled, value,
+                onPropertyChanging: (oldValue, newValue) =>
+                    PackagedComHelper.SetBlockedClsid(Clsid, PackagedComHelper.BlockedClsidType.CurrentUser, !newValue),
+                notifyWhenNotChanged: true,
+                asyncNotifyWhenNotChanged: true);
         }
     }
 }

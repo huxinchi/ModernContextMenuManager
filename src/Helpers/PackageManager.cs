@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Windows.Win32.Storage.Packaging.Appx;
@@ -129,6 +131,24 @@ namespace ModernContextMenuManager.Helpers
                     clsids = [.. list.Distinct()];
                 }
 
+                var logoNode = xmlDocument.SelectSingleNode("//default:Properties/default:Logo", namespaceManager);
+                string logo = logoNode?.InnerText ?? "";
+                var logoFullPath = Path.Combine(packageInstallLocation, logo);
+
+                if (!File.Exists(logoFullPath))
+                {
+                    var logoDirectory = Path.GetDirectoryName(logoFullPath);
+                    logoFullPath = "";
+                    var logoKey = Path.GetFileNameWithoutExtension(logo);
+                    var ext = Path.GetExtension(logo);
+                    if (Directory.Exists(logoDirectory))
+                    {
+                        var files = Directory.GetFiles(logoDirectory, $"{logoKey}*{ext}");
+                        logoFullPath = files?.FirstOrDefault(c => !c.Contains("contrast"));
+                        if (string.IsNullOrEmpty(logoFullPath)) logoFullPath = files?.FirstOrDefault() ?? "";
+                    }
+                }
+
                 var appNodes = xmlDocument.SelectNodes("//uap:VisualElements", namespaceManager);
 
                 if (appNodes != null && appNodes.Count > 0)
@@ -136,13 +156,12 @@ namespace ModernContextMenuManager.Helpers
                     foreach (XmlNode appNode in appNodes.OfType<XmlNode>().OrderBy(c => c.Attributes?["AppListEntry"]?.Value == "none" ? 1 : 0))
                     {
                         var displayName = appNode.Attributes?["DisplayName"]?.Value ?? "";
-                        var image = appNode.Attributes?["Square44x44Logo"]?.Value ?? "";
 
-                        return new(displayName, image, appNode.Attributes?["AppListEntry"]?.Value != "none", clsids ?? []);
+                        return new(displayName, logoFullPath, appNode.Attributes?["AppListEntry"]?.Value != "none", clsids ?? []);
                     }
                 }
 
-                if (clsids != null) return new AppInfo("", "", false, clsids);
+                if (clsids != null) return new AppInfo("", logoFullPath, false, clsids);
             }
             return null;
         }

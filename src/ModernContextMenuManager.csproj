@@ -1,41 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0-windows10.0.17763.0</TargetFramework>
+		<TargetFramework>net9.0-windows8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<Platforms>x86;x64;ARM64</Platforms>
 		<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<Version>0.0.2</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<DynamicCodeSupport>false</DynamicCodeSupport>
 		<PublishAot>true</PublishAot>
 		<OptimizationPreference>Size</OptimizationPreference>
-		<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
+		<StaticallyLinked>true</StaticallyLinked>
 		<XmlResolverIsNetworkingEnabledByDefault>false</XmlResolverIsNetworkingEnabledByDefault>
 		<SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<StackTraceSupport>false</StackTraceSupport>
-		<UseSystemResourceKeys>true</UseSystemResourceKeys>
-		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-		<CustomResourceTypesSupport>true</CustomResourceTypesSupport>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<RuntimeHostConfigurationOption Include="System.Windows.Forms.PictureBox.UseWebRequest" Value="false" Trim="true" />
-		<TrimmerRootDescriptor Include="ILLink.Descriptors.xml" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
+		<!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+		<PackageReference Include="Avalonia.Diagnostics" Version="11.2.1">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.106">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-
 </Project>

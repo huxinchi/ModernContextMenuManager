@@ -1,0 +1,57 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:models="using:ModernContextMenuManager.Models"
+		xmlns:vm="using:ModernContextMenuManager.ViewModels"
+        x:Class="ModernContextMenuManager.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
+		TransparencyLevelHint="AcrylicBlur"
+        Background="#AA000000"
+		Width="600" Height="600"
+		MinWidth="300" MinHeight="100"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Title="Modern ContextMenu Manager"
+		ExtendClientAreaToDecorationsHint="True">
+	<Grid x:Name="LayoutRoot" IsEnabled="{Binding SearchCommand.IsRunning, Converter={StaticResource NotConverter}}"
+		  RowDefinitions="40, Auto, *">
+		<TextBlock FontSize="12" Text="Modern ContextMenu Manager" Margin="17,0" VerticalAlignment="Center" IsHitTestVisible="False" />
+		<Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="16,4,16,12">
+			<TextBox x:Name="SearchBox" Text="{Binding SearchingText,Mode=TwoWay}" Watermark="Enter the app name or guid here." Margin="0,0,8,0" KeyDown="SearchBox_KeyDown" />
+			<Button x:Name="SearchButton" Grid.Column="1" BorderThickness="0" VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+					Command="{Binding SearchCommand}" CommandParameter="{Binding SearchingText}">
+				<Grid MinWidth="64">
+					<TextBlock Text="Search" HorizontalAlignment="Center" IsVisible="{Binding SearchingText,Converter={StaticResource StringIsNotEmptyConverter}}" />
+					<TextBlock Text="Refresh" HorizontalAlignment="Center" IsVisible="{Binding SearchingText,Converter={StaticResource StringIsEmptyConverter}}" />
+				</Grid>
+			</Button>
+		</Grid>
+		<ScrollViewer Grid.Row="2" Focusable="True" FocusAdorner="{x:Null}">
+			<ItemsControl ItemsSource="{Binding Apps}" Margin="16,0,16,12">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate x:DataType="models:PackagedAppModel">
+						<Expander HorizontalAlignment="Stretch" IsExpanded="True" Margin="0,4" Padding="0" CornerRadius="4">
+							<Expander.Header>
+								<Grid ColumnDefinitions="Auto,*" MinHeight="60">
+									<Border ClipToBounds="True" Width="32" Height="32" Margin="0,0,12,0" CornerRadius="4" Background="#1e1e1e" VerticalAlignment="Center">
+										<Image Source="{Binding Icon}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" />
+									</Border>
+									<TextBlock Text="{Binding DisplayName}" FontSize="14" LineHeight="22" Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,4" />
+								</Grid>
+							</Expander.Header>
+							<ItemsControl ItemsSource="{Binding Clsids}" Margin="60,8,12,8">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate x:DataType="models:ClsidCheckModel">
+										<CheckBox Margin="0,4,0,4" IsChecked="{Binding Enabled,Mode=TwoWay}" IsEnabled="{Binding CanModify}">
+											<TextBlock Text="{Binding Clsid}" FontFamily="Consolas, Segoe UI" TextWrapping="Wrap" />
+										</CheckBox>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</Expander>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</Window>

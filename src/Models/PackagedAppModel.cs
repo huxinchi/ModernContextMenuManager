@@ -1,4 +1,5 @@
-﻿using ModernContextMenuManager.Helpers;
+﻿using Avalonia.Media.Imaging;
+using ModernContextMenuManager.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ModernContextMenuManager.Models
 {
-    public class AppModel
+    public partial class PackagedAppModel
     {
-        public AppModel(
+        public PackagedAppModel(
             AppInfo appInfo,
             PackageInfo packageInfo,
             Dictionary<Guid, PackagedComHelper.BlockedClsidType> blockedClsids)
@@ -27,11 +28,11 @@ namespace ModernContextMenuManager.Models
 
             if (string.IsNullOrEmpty(AppInfo.DisplayName))
             {
-                DisplayName = $"[{PackageInfo.PackageFamilyName}]";
+                DisplayName = $"{PackageInfo.PackageFamilyName}";
             }
             else
             {
-                DisplayName = $"{AppInfo.DisplayName} [{PackageInfo.PackageFamilyName}]";
+                DisplayName = $"{AppInfo.DisplayName}\n{PackageInfo.PackageFamilyName}";
             }
         }
 
@@ -42,5 +43,21 @@ namespace ModernContextMenuManager.Models
         public IReadOnlyList<ClsidCheckModel> Clsids { get; }
 
         public string DisplayName { get; }
+
+        public Bitmap? Icon
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(AppInfo.IconPath))
+                {
+                    var iconPath = System.IO.Path.Combine(PackageInfo.PackageInstallLocation, AppInfo.IconPath);
+                    if (System.IO.File.Exists(iconPath))
+                    {
+                        return new Bitmap(iconPath);
+                    }
+                }
+                return null;
+            }
+        }
     }
 }
