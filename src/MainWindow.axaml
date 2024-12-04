@@ -7,7 +7,7 @@
         x:Class="ModernContextMenuManager.MainWindow"
 		x:DataType="vm:MainWindowViewModel"
 		TransparencyLevelHint="AcrylicBlur"
-        Background="#AA000000"
+        Background="{DynamicResource MainWindowBackgroundBrush}"
 		Width="600" Height="600"
 		MinWidth="300" MinHeight="100"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -33,7 +33,7 @@
 						<Expander HorizontalAlignment="Stretch" IsExpanded="True" Margin="0,4" Padding="0" CornerRadius="4">
 							<Expander.Header>
 								<Grid ColumnDefinitions="Auto,*" MinHeight="60">
-									<Border ClipToBounds="True" Width="32" Height="32" Margin="0,0,12,0" CornerRadius="4" Background="#1e1e1e" VerticalAlignment="Center">
+									<Border ClipToBounds="True" Width="32" Height="32" Margin="0,0,12,0" CornerRadius="4" Background="{DynamicResource AppListIconBackgroundBrush}" VerticalAlignment="Center">
 										<Image Source="{Binding Icon}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" />
 									</Border>
 									<TextBlock Text="{Binding DisplayName}" FontSize="14" LineHeight="22" Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,4" />

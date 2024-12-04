@@ -11,9 +11,21 @@
 	</Application.Styles>
 
 	<Application.Resources>
-		<vm:ViewModelLocator x:Key="Locator" />
-		<helper:NotConverter x:Key="NotConverter" />
-		<helper:StringIsEmptyConverter x:Key="StringIsEmptyConverter" />
-		<helper:StringIsNotEmptyConverter x:Key="StringIsNotEmptyConverter" />
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key='Light'>
+					<SolidColorBrush x:Key='MainWindowBackgroundBrush'>#AAFFFFFF</SolidColorBrush>
+					<SolidColorBrush x:Key='AppListIconBackgroundBrush'>#DDDDDD</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key='Dark'>
+					<SolidColorBrush x:Key='MainWindowBackgroundBrush'>#AA000000</SolidColorBrush>
+					<SolidColorBrush x:Key='AppListIconBackgroundBrush'>#222222</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+			<vm:ViewModelLocator x:Key="Locator" />
+			<helper:NotConverter x:Key="NotConverter" />
+			<helper:StringIsEmptyConverter x:Key="StringIsEmptyConverter" />
+			<helper:StringIsNotEmptyConverter x:Key="StringIsNotEmptyConverter" />
+		</ResourceDictionary>
 	</Application.Resources>
 </Application>
